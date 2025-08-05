@@ -101,7 +101,8 @@ def read_expr(src, skip_envs=(), tolerance=0, mode=MODE_NON_MATH):
         expr = MATH_TOKEN_TO_ENV[c.category]([], position=c.position)
         return read_math_env(src, expr, tolerance=tolerance)
     elif c.category == TC.Escape:
-        name, args = read_command(src, tolerance=tolerance, mode=mode)
+        # Ignore optional arguments when in math mode
+        name, args = read_command(src, tolerance=tolerance, n_optional_args=0 if mode==MODE_MATH else -1, mode=mode)
         if name == 'item':
             assert mode != MODE_MATH, r'Command \item invalid in math mode.'
             contents = read_item(src)
