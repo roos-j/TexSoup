@@ -1107,6 +1107,8 @@ class TexText(TexExpr, str):
     False
     >>> TexText('df ').strip()
     'df'
+    >>> TexText('df', position=0).position
+    0
     """
 
     _has_custom_contain = True
