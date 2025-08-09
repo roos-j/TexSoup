@@ -1120,6 +1120,10 @@ class TexText(TexExpr, str):
         super().__init__('text', [text], position=position)
         self._text = text
 
+    def __new__(cls, text, position=-1):
+        '''Needed for instantiating with position info because we're subclassing `str` (which is probably not a good choice to begin with).'''
+        return super().__new__(cls, text)
+
     def __contains__(self, other):
         """
         >>> obj = TexText(Token('asdf'))
