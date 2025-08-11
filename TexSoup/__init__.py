@@ -11,7 +11,7 @@ __version__ = '0.3.1.dev1'
 
 
 # noinspection PyPep8Naming
-def TexSoup(tex_code, skip_envs=(), tolerance=0):
+def TexSoup(tex_code, skip_envs=(), tolerance=0, progress_callback=None):
     r"""
     At a high-level, parses provided Tex into a navigable, searchable
     structure. This is accomplished in two steps:
@@ -22,6 +22,8 @@ def TexSoup(tex_code, skip_envs=(), tolerance=0):
     :param Union[str,iterable] tex_code: the Tex source
     :param Union[str] skip_envs: names of environments to skip parsing
     :param int tolerance: error tolerance level (only supports 0 or 1)
+    :param progress_callback: a function to call with current position 
+        when new expression is parsed (maximum value is length of source)
     :return: :class:`TexSoup.data.TexNode` object representing tex document
 
     >>> from TexSoup import TexSoup
@@ -84,5 +86,5 @@ def TexSoup(tex_code, skip_envs=(), tolerance=0):
     >>> soup
     SOUP
     """
-    parsed, src = read(tex_code, skip_envs=skip_envs, tolerance=tolerance)
+    parsed, src = read(tex_code, skip_envs=skip_envs, tolerance=tolerance, progress_callback=progress_callback)
     return TexNode(parsed, src=src)
