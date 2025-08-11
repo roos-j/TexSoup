@@ -72,6 +72,25 @@ def test_commands_envs_text():
     everything = list(doc.expr.all)
     assert len(everything) == 12
 
+def test_progress_callback():
+    """Tests progress callback."""
+    src = r"""\section{FirstNode}A text node"""
+    last_progress = -1
+    cur_progress = 0
+    max_progress = len(src)
+    progress_reports = 0
+    def progress(p):
+        nonlocal last_progress, cur_progress, progress_reports
+        assert p >= 0
+        assert p > last_progress
+        assert p <= max_progress
+        last_progress = cur_progress
+        cur_progress = p
+        progress_reports += 1
+    soup = TexSoup(src, progress_callback=progress)
+    assert cur_progress == max_progress
+    assert progress_reports == 4  # one for section, one for argument, one for text, one for end
+    
 
 #########
 # CASES #
